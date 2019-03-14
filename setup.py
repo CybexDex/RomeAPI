@@ -41,10 +41,10 @@ setup(
     #
     # This field corresponds to the "Home-Page" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#home-page-optional
-    url='https://github.com/shantilu/cybexapi',  # Optional
+    url='https://github.com/CybexDex/RomeAPI.git',  # Optional
 
     author='CYBEX team',  # Optional
-    author_email='ruoshui@cybexapi.io',  # Optional
+    author_email='ruoshui.lu@cybex.io',  # Optional
 
     # Classifiers help users find your project by categorizing it.
     #
@@ -144,6 +144,6 @@ setup(
     project_urls={  # Optional
         'Cybex Open Source': 'https://github.com/CybexDex',
         'Main': 'https://cybex.io',
-        'Source': 'https://github.com/shantilu/cybexapi',
+        'Source': 'https://github.com/CybexDex/RomeAPI.git',
     },
 )
