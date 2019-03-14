@@ -23,10 +23,10 @@ Note that the private key is not your login password on the CYBEX exchange.
 
   ```Python
  from romeapi import Cybex
- cybex = Cybex(accountName="xxxx", private_key="xxxxxxxxxxxxxxxxxxxxxx")
+ cybex = Cybex(accountName="xxxx", key="xxxxxxxxxxxxxxxxxxxxxx")
  # If you know your account id, you may also provide it at initialization.
  # Otherwise, the API will find it for you, which might take a little time.
- # cybex = Cybex(accountName="xxxx", private_key="xxxxxxxxxxxxxxxxxxxxxx",account="1.2.xxxx")
+ # cybex = Cybex(accountName="xxxx", key="xxxxxxxxxxxxxxxxxxxxxx",account="1.2.xxxx")
  
  # market data
  cybex.load_markets()
