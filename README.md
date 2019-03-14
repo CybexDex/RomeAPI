@@ -34,7 +34,7 @@
  Fetch the list of all available markets from an exchange and returns an array of markets (objects with properties such as asset_pair, base, quote etc.). Some exchanges do not have means for obtaining a list of markets via their online API. For those, the list of markets is hardcoded.
 
 ### load_markets ([reload]):
- Return the list of markets as an object indexed by asset_pair and caches it with the exchange instance. Returns cached markets if loaded already, unless the reload = true flag is forced.
+ Return the list of markets as an object indexed by asset_pair and caches it with the exchange instance. Return the cached markets if loaded already, unless the reload = true flag is forced.
     
 ### fetch_order_book(asset_pair[, limit = undefined[, params = {}]]): 
 
@@ -47,7 +47,7 @@
  Fetch the user account balance.
 
 ### create_order(asset_pair, type, side, amount[, price[, params]])
- Create an limit order with given params 
+ Create a limit order with given params 
  
 ### create_limit_buy_order(asset_pair, amount, price[, params])
  Create a new limit buy order
@@ -85,8 +85,8 @@
  
  ## FAQ
  
- ### Why we should use this library?
- The CYBEX API library is connected to CYBEX ROME (Realtime Order Matching Engine) directly through the API server. High frequency trading, like market making, is thus made possible on our decentralized exchange. 
+ ### Why should we use this library?
+ The CYBEX API library is connected to the CYBEX ROME (Realtime Order Matching Engine) directly through the API server. High frequency trading, like market making, is thus made possible on our decentralized exchange. 
  This API library utilizes *coincurve* to improve performance, so that it is efficient, cross platform, responsive, and easy to use.
  
  ### Are API endpoints connected to CYBEX witness node/full node?
