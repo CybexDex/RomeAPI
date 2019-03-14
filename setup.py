@@ -31,7 +31,7 @@ setup(
     # $ pip install sampleproject
     #
     # And where it will live on PyPI: https://pypi.org/project/sampleproject/
-    name='cybexapi',  # Required
+    name='cybex-rome',  # Required
     version='1.0.0',  # Required
     description='API connector to CYBEX exchange, the first realtime order matching decentralized exchange',  # Optional
     long_description=long_description,  # Optional
