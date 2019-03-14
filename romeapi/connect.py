@@ -11,6 +11,8 @@ from .core import operations, signedtransactions
 from .core.ecdsa import quick_sign_message
 import graphenebase.ecdsa
 
+from graphenebase.account import PasswordKey
+
 """ CCXT
 
 The unified ccxt API is a subset of methods common among the exchanges. It currently contains the following methods:
@@ -349,10 +351,23 @@ class Cybex:
     uat_api_endpoint_root = "https://apitest.cybex.io/v1"
     prod_chain_endpoint = "https://hongkong.cybex.io/"
 
-    def __init__(self, accountName, key, account=None, env='prod', timeout=None):
+    def __init__(self, accountName, password=None, key=None, account=None, env='prod', timeout=None):
 
         self.accountName = accountName
-        self.account = self._find_account(accountName)
+
+        if key is not None:
+            user_key = key
+
+        elif password is not None:
+            user_key = PasswordKey(accountName, password).get_private()
+
+        else:
+            raise CybexSignerException('Cannot initialize signer, no valid password or key')
+
+        if account:
+            self.account = account
+        else:
+            self.account = self._find_account(accountName)
         if env == 'prod':
             self.api_root = self.prod_api_endpoint_root
         elif env == 'uat':
@@ -365,8 +380,10 @@ class Cybex:
 
         self.session.headers.update({'content-type': 'application/json', 'accept': 'application/json'})
         self._load()
+
+        # check if we find the account at last
         if self.account:
-            self.signer = Signer(self.account, key, self.refData)
+            self.signer = Signer(self.account, user_key, self.refData)
         else:
             raise CybexSignerException('Cannot initialize signer, no valid account')
 

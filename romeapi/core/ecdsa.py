@@ -26,6 +26,8 @@ class QuickPrivateKey(object):
         if wif is None:
             import os
             self._wif = Base58(hexlify(os.urandom(32)).decode('ascii'))
+        elif isinstance(wif, QuickPrivateKey):
+            self._wif = wif._wif
         elif isinstance(wif, Base58):
             self._wif = wif
         else:
