@@ -365,7 +365,10 @@ class Cybex:
 
         self.session.headers.update({'content-type': 'application/json', 'accept': 'application/json'})
         self._load()
-        self.signer = Signer(account, key, self.refData)
+        if self.account:
+            self.signer = Signer(self.account, key, self.refData)
+        else:
+            raise CybexSignerException('Cannot initialize signer, no valid account')
 
     def _load(self):
         url = "%s/refData" % self.api_root
