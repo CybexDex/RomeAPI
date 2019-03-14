@@ -6,7 +6,7 @@
 
 ## Installation
 
- `pip install cybex-rome`
+ `pip3 install romeapi`
 
  requirements: python>2.7 or python>3.5. We will drop support for python 2 later.
 
