@@ -15,12 +15,17 @@
 ### Construct Cybex(account, private_key)
  Construct an cybex object with your account name and private key. Note that account name is not your login account name and password.
  
- ```Python
- from cybexapi import Cybex
- cybex = Cybex(account="1.2.xxxx", accountName="xxxx", private_key="xxxxxxxxxxxxxxxxxxxxxx")
+  ```Python
+ from cybex-rome import Cybex
+ cybex = Cybex(accountName="xxxx", private_key="xxxxxxxxxxxxxxxxxxxxxx")
+ # if you know your account, you may also provide it at initialization
+ # otherwise, it will find for you, which might take a little time
+ # cybex = Cybex(accountName="xxxx", private_key="xxxxxxxxxxxxxxxxxxxxxx",account="1.2.xxxx")
  
  # market data
  cybex.load_markets()
+ # ticker
+ cybex.fetch_ticker("ETH/USDT")
  # private methods
  cybex.fetch_balance()
  ```
