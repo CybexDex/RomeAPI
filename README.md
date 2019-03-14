@@ -1,6 +1,6 @@
 # CYBEX ROME API Library
 
- The CYBEX API library is used to connect and trade with the decentralized realtime cryptocurrency exchange - CYBEX. The trading process on a decentralized exchange is different from others by nature, instead of logging in a session with passwords, all the API endpoints are publicly open, but one would need his/her very own private key to sign a request for authentication.
+ The CYBEX ROME API library is used to connect and trade with the decentralized realtime cryptocurrency exchange - CYBEX. The trading process on a decentralized exchange is different from others by nature, instead of logging in a session with passwords, all the API endpoints are publicly open, but one would need his/her very own private key to sign a request for authentication.
 
  This API library is inspired by CCXT, an extendable, easy to use, exchange connection library. Structures and function calls are roughly the same. We also utilized a library *coincurve* with high performance C extension *secp256k1* to accelerate the signing process, approximately 5ms for one signature. We will try to get listed in *CCXT* soon.
 
@@ -12,7 +12,7 @@
 
 ## Demo Application
 
-A [demo application](https://github.com/CybexDex/cybex-python-demo) is available for quick start on how to use the CYBEX Python API library.
+A [demo application](https://github.com/CybexDex/cybex-python-demo) is available for quick start on how to use the CYBEX ROME API library.
 
 ## Supported function calls
 
@@ -43,7 +43,7 @@ Note that the private key is not your login password on the CYBEX exchange.
 > 1. on the top left of the web page, go to ACCOUNT, then to the middle left of the page, click 'Permissions'
 > 1. under 'Active Permissions'->ACCOUNT/KEY/ADDRESS, click the public key string, which looks like CYB81SdxxxxxxxxxxxxxxxxxxxxxxxxJW
 > 1. on the pop up box titled 'Private key viewer', click 'SHOW', then the private key string will be shown under 'Private key (WIF - Wallet Import Format)', which looks like '5HyMuxxxxxxxxxxxxxxxxxxxxxxxxxx4ka'
-> 1. copy and save the private key string in a secure place to use with the CYBEX Python API
+> 1. copy and save the private key string in a secure place to use with the CYBEX ROME API
 
 
 ### fetch_markets
