@@ -10,11 +10,17 @@
 
  requirements: python>2.7 or python>3.5. We will drop support for python 2 later.
 
+## Demo Application
+
+A [demo application](https://github.com/CybexDex/cybex-python-demo) is available for quick start on how to use the CYBEX Python API library.
+
 ## Supported function calls
 
 ### Construct Cybex(account, private_key)
- Construct a *Cybex* object with your account name and private key, optionally with an account id. Note that the private key is not your login password.
- 
+Construct a *Cybex* object with your account name and private key, optionally with an account id. 
+Note that the private key is not your login password on the CYBEX exchange.
+
+
   ```Python
  from romeapi import Cybex
  cybex = Cybex(accountName="xxxx", private_key="xxxxxxxxxxxxxxxxxxxxxx")
@@ -29,6 +35,16 @@
  # private methods
  cybex.fetch_balance()
  ```
+
+### Private Key Location
+
+> To find your private key, please go to go to https://olddex.cybex.io (Note that this is the old version):
+> 1. logon with your account name and password
+> 1. on the top left of the web page, go to ACCOUNT, then to the middle left of the page, click 'Permissions'
+> 1. under 'Active Permissions'->ACCOUNT/KEY/ADDRESS, click the public key string, which looks like CYB81SdxxxxxxxxxxxxxxxxxxxxxxxxJW
+> 1. on the pop up box titled 'Private key viewer', click 'SHOW', then the private key string will be shown under 'Private key (WIF - Wallet Import Format)', which looks like '5HyMuxxxxxxxxxxxxxxxxxxxxxxxxxx4ka'
+> 1. copy and save the private key string in a secure place to use with the CYBEX Python API
+
 
 ### fetch_markets
  Fetch the list of all available markets from an exchange and returns an array of markets (objects with properties such as asset_pair, base, quote etc.). Some exchanges do not have means for obtaining a list of markets via their online API. For those, the list of markets is hardcoded.
