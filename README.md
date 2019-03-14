@@ -6,7 +6,7 @@
 
 ## Installation
 
- `pip install cybexapi`
+ `pip install cybex-rome`
 
  requirements: python>2.7 or python>3.5. We will drop support for python 2 later.
 
@@ -16,7 +16,7 @@
  Construct an cybex object with your account name and private key. Note that account name is not your login account name and password.
  
   ```Python
- from cybex-rome import Cybex
+ from romeapi import Cybex
  cybex = Cybex(accountName="xxxx", private_key="xxxxxxxxxxxxxxxxxxxxxx")
  # if you know your account, you may also provide it at initialization
  # otherwise, it will find for you, which might take a little time
