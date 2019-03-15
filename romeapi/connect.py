@@ -359,7 +359,7 @@ class Cybex:
             user_key = key
 
         elif password is not None:
-            user_key = PasswordKey(accountName, password).get_private()
+            user_key = str(PasswordKey(accountName, password).get_private())
 
         else:
             raise CybexSignerException('Cannot initialize signer, no valid password or key')

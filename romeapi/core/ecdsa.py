@@ -8,19 +8,7 @@ from coincurve.context import GLOBAL_CONTEXT as CCGLOBAL_CONTEXT
 import coincurve.utils as CCutils
 from graphenebase.ecdsa import _is_canonical
 
-from coincurve.context import GLOBAL_CONTEXT
-from coincurve._libsecp256k1 import ffi, lib
-#
-# CDATA_SIG_LENGTH = 64
-#
-# def ecdsa_recoverable_serialize(recover_sig, context):
-#     output = ffi.new('unsigned char[%d]' % CDATA_SIG_LENGTH)
-#     recid = ffi.new('int *')
-#
-#     lib.secp256k1_ecdsa_recoverable_signature_serialize_compact(context.ctx, output, recid, recover_sig)
-#
-#     return bytes(ffi.buffer(output, CDATA_SIG_LENGTH)), recid[0]
-#
+# skip public key calculation, speeding up
 class QuickPrivateKey(object):
     def __init__(self, wif = None, prefix = "GPH"):
         if wif is None:
@@ -32,8 +20,10 @@ class QuickPrivateKey(object):
             self._wif = wif
         else:
             self._wif = Base58(wif)
+
     def __repr__(self):
         return repr(self._wif)
+
     def __bytes__(self):
         if sys.version > '3':
             return bytes(self._wif)
@@ -82,6 +72,7 @@ class QuickPrivateKey(object):
 #     sigstr += signature
 #
 #     return sigstr
+
 
 def quick_sign_message(message, wif, hashfn=hashlib.sha256):
     if not isinstance(message, bytes):

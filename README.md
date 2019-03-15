@@ -23,10 +23,11 @@ Note that the private key is not your login password on the CYBEX exchange.
 
   ```Python
  from romeapi import Cybex
- cybex = Cybex(accountName="xxxx", key="xxxxxxxxxxxxxxxxxxxxxx")
- # If you know your account id, you may also provide it at initialization.
- # Otherwise, the API will find it for you, which might take a little time.
- # cybex = Cybex(accountName="xxxx", key="xxxxxxxxxxxxxxxxxxxxxx",account="1.2.xxxx")
+ # init with accountName and password
+ cybex = Cybex(accountName="sampleuser", password="samplepassword")
+ # If you know your account id and private key, you may use it for initialization
+ # API will find account for you with given accountName, which might take a little time.
+ # cybex = Cybex(accountName="sampleuser", key="xxxxxxxxxxxxxxxxxxxxxx", account="1.2.00000")
  
  # market data
  cybex.load_markets()
@@ -35,15 +36,6 @@ Note that the private key is not your login password on the CYBEX exchange.
  # private methods
  cybex.fetch_balance()
  ```
-
-### Private Key Location
-
-> To find your private key, please go to go to https://olddex.cybex.io (Note that this is the old version):
-> 1. logon with your account name and password
-> 1. on the top left of the web page, go to ACCOUNT, then to the middle left of the page, click 'Permissions'
-> 1. under 'Active Permissions'->ACCOUNT/KEY/ADDRESS, click the public key string, which looks like CYB81SdxxxxxxxxxxxxxxxxxxxxxxxxJW
-> 1. on the pop up box titled 'Private key viewer', click 'SHOW', then the private key string will be shown under 'Private key (WIF - Wallet Import Format)', which looks like '5HyMuxxxxxxxxxxxxxxxxxxxxxxxxxx4ka'
-> 1. copy and save the private key string in a secure place to use with the CYBEX ROME API
 
 
 ### fetch_markets
