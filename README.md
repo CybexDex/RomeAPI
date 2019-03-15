@@ -6,9 +6,11 @@
 
 ## Installation
 
- `pip3 install romeapi`
+ `pip install romeapi`
 
- NOTE: python>=3.5 is required as python 2.x does not support *bytes* type, which is essential for signature generation.
+ NOTE: 
+ 1. python>=3.5 is required as python 2.x does not support *bytes* type, which is essential for signature generation.
+ 1. if both python 2.x and python 3.x exist, and python 3.x *virtual env* is not activated, then use `pip3 install romeapi`
 
 ## Demo Application
 
