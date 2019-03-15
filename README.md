@@ -92,16 +92,16 @@ cybex = Cybex(accountName="sample_user", password="sample_password", account="1.
  Fetch orders with a given asset pair
  
 ### fetch_open_orders([asset_pair[, since, limit, params]]]])
- Fetch users' open orders with a given asset pair
+ Fetch user's open orders with a given asset pair
  
 ### fetch_closed_orders([asset_pair[, since[, limit[, params]]]])
- Fetch users' closed orders with a given asset pair
+ Fetch user's closed orders with a given asset pair
  
 ### fetch_my_trades([asset_pair[, since[, limit[, params]]]])
- Fetch users' trade history
+ Fetch user's trade history
   
 ### fetch_best_price([asset_pair[, params]])
- Fetch currently best bid and ask prices for a given asset pair
+ Fetch current best bid and ask prices for a given asset pair
  
  
  ## FAQ
@@ -110,8 +110,8 @@ cybex = Cybex(accountName="sample_user", password="sample_password", account="1.
  The CYBEX API library is connected to the CYBEX ROME (Realtime Order Matching Engine) directly through the API server. High frequency trading, like market making, is thus made possible on our decentralized exchange. 
  This API library utilizes *coincurve* to improve performance, so that it is efficient, cross platform, responsive, and easy to use.
  
- ### Are API endpoints connected to CYBEX witness node/full node?
- No, the API server is connected to ROME(Realtime Order Matching Engine)
+ ### Are the API endpoints connected to the CYBEX witness nodes/full nodes?
+ No, the API server is connected to the ROME (**R**ealtime **O**rder **M**atching **E**ngine).
  
  ### What is the difference of this library from PyCybex?
  PyCybex is forked from the bitshares python library, so that requests are executed mainly on full nodes. 
@@ -120,6 +120,6 @@ cybex = Cybex(accountName="sample_user", password="sample_password", account="1.
  
  
  ### Can I choose to use PyCybex instead?
- Sure, but you might find it less efficient. 
+ Yes, you can. But you might find it less efficient. 
  
- Visit [PyCybex's site](#https://github.com/CybexDex/cybex-node-doc/tree/master/transaction/python) to find more details.
+ Visit [PyCybex's site](#https://github.com/CybexDex/cybex-node-doc/tree/master/transaction/python) to find out more details.
