@@ -118,7 +118,7 @@ class Pair:
         return {
             "amount_to_sell": {
                 "amount": int(
-                    round(float(amount) * 10 ** self.quote["precision"])
+                    round(float(amount) * 10 ** self.base["precision"])
                 ),
                 "asset_id": self.base["id"]
             },
@@ -127,7 +127,7 @@ class Pair:
                     round(
                         float(amount)
                         * float(price)
-                        * 10 ** self.base["precision"]
+                        * 10 ** self.quote["precision"]
                     )
                 ),
                 "asset_id": self.quote["id"]
