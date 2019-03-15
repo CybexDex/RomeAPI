@@ -8,7 +8,7 @@
 
  `pip3 install romeapi`
 
- requirements: python>=3.5. As python 2 dont support bytes type, which is essential at generating signatures.
+ NOTE: python>=3.5 is required as python 2.x does not support *bytes* type, which is essential for signature generation.
 
 ## Demo Application
 
@@ -16,18 +16,21 @@ A [demo application](https://github.com/CybexDex/cybex-python-demo) is available
 
 ## Supported function calls
 
-### Construct Cybex(account, private_key)
+### Construct Cybex(account, password or private_key)
 Construct a *Cybex* object with your account name and private key, optionally with an account id. 
 Note that the private key is not your login password on the CYBEX exchange.
 
 
   ```Python
  from romeapi import Cybex
- # init with accountName and password
- cybex = Cybex(accountName="sampleuser", password="samplepassword")
- # If you know your account id and private key, you may use it for initialization
- # API will find account for you with given accountName, which might take a little time.
- # cybex = Cybex(accountName="sampleuser", key="xxxxxxxxxxxxxxxxxxxxxx", account="1.2.00000")
+ # Init with accountName and password
+ cybex = Cybex(accountName="sample_user", password="sample_password")
+ 
+ # Or optionally init with account name and private key
+ # cybex = Cybex(accountName="sample)user", key="private_key")
+ 
+ # If you know your account id, you can optionally provide it to speed up the initialization,
+ # cybex = Cybex(accountName="sample_user", key="private_key", account="1.2.00000")
  
  # market data
  cybex.load_markets()
@@ -39,7 +42,7 @@ Note that the private key is not your login password on the CYBEX exchange.
 
 
 ### fetch_markets
- Fetch the list of all available markets from an exchange and returns an array of markets (objects with properties such as asset_pair, base, quote etc.). Some exchanges do not have means for obtaining a list of markets via their online API. For those, the list of markets is hardcoded.
+ Fetch the list of all available markets from an exchange and returns an array of markets (objects with properties such as asset_pair, base, quote etc.). Some exchanges do not have means to obtain a list of markets via their online API. For those, the list of markets is hardcoded.
 
 ### load_markets ([reload]):
  Return the list of markets as an object indexed by asset_pair and caches it with the exchange instance. Return the cached markets if loaded already, unless the reload = true flag is forced.
