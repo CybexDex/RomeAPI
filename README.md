@@ -107,7 +107,7 @@ cybex = Cybex(accountName="sample_user", password="sample_password", account="1.
  ## FAQ
  
  ### Why should we use this library?
- The CYBEX API library is connected to the CYBEX ROME (Realtime Order Matching Engine) directly through the API server. High frequency trading, like market making, is thus made possible on our decentralized exchange. 
+ The CYBEX API library provides convenient access to the CYBEX ROME (**R**ealtime **O**rder **M**atching **E**ngine) directly through the API server. High frequency trading or market making is thus made possible on our decentralized exchange. 
  This API library utilizes *coincurve* to improve performance, so that it is efficient, cross platform, responsive, and easy to use.
  
  ### Are the API endpoints connected to the CYBEX witness nodes/full nodes?
