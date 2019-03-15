@@ -44,8 +44,8 @@ cybex = Cybex(accountName="sample)user", key="private_key")
 If you know your account id, you can optionally provide it to speed up the initialization, e.g.
 ```Python
 cybex = Cybex(accountName="sample_user", password="sample_password", account="1.2.00000") 
-or
-cybex = Cybex(accountName="sample_user", key="private_key", account="1.2.00000") 
+# or
+# cybex = Cybex(accountName="sample_user", key="private_key", account="1.2.00000") 
 ```
 
 
