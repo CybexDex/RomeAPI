@@ -16,21 +16,13 @@ A [demo application](https://github.com/CybexDex/cybex-python-demo) is available
 
 ## Supported function calls
 
-### Construct Cybex(account, password or private_key)
-Construct a *Cybex* object with your account name and private key, optionally with an account id. 
-Note that the private key is not your login password on the CYBEX exchange.
+### Construct Cybex(account, password)  (Recommended)
+Construct a *Cybex* object with your account name and password.
 
-
-  ```Python
+```Python
  from romeapi import Cybex
- # Init with accountName and password
+ # init with accountName and password
  cybex = Cybex(accountName="sample_user", password="sample_password")
- 
- # Or optionally init with account name and private key
- # cybex = Cybex(accountName="sample)user", key="private_key")
- 
- # If you know your account id, you can optionally provide it to speed up the initialization,
- # cybex = Cybex(accountName="sample_user", key="private_key", account="1.2.00000")
  
  # market data
  cybex.load_markets()
@@ -38,7 +30,23 @@ Note that the private key is not your login password on the CYBEX exchange.
  cybex.fetch_ticker("ETH/USDT")
  # private methods
  cybex.fetch_balance()
- ```
+```
+
+### Construct Cybex(account, private_key) (Optional)
+Optionally, you can construct a *Cybex* object with your account name and private key
+NOTE that the private key is not your logon password on the CYBEX exchange. 
+To find your private key, refer to [demo application](https://github.com/CybexDex/cybex-python-demo). 
+ 
+```Python
+cybex = Cybex(accountName="sample)user", key="private_key")
+```
+
+If you know your account id, you can optionally provide it to speed up the initialization, e.g.
+```Python
+cybex = Cybex(accountName="sample_user", password="sample_password", account="1.2.00000") 
+or
+cybex = Cybex(accountName="sample_user", key="private_key", account="1.2.00000") 
+```
 
 
 ### fetch_markets
