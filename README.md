@@ -103,7 +103,19 @@ cybex = Cybex(accountName="sample_user", password="sample_password", account="1.
 ### fetch_best_price([asset_pair[, params]])
  Fetch current best bid and ask prices for a given asset pair
  
+### fetch_ohlcv(self, asset_pair, timeframe='1m', params={})
+ Fetch kline data for a given asset pair
  
+ 
+|Parameter|Type|Mandatory|Example value|
+| --- | --- | --- | --- |
+| assetPair | STRING | YES | E.g. ETH/USDT, EOS/USDT |
+interval | ENUM | YES | 1m, 3m, , 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M
+startTime | LONG | NO | Beginning time of the query in epoch time.
+endTime | LONG | NO | End time of the query in epoch time.
+limit | INT | NO | Level to be shown
+useTradePrice | BOOL | NO | By default, it is false and the api returns market prices. If it is specified as “true”, this api returns our exchange’s prices.
+
  ## FAQ
  
  ### Why should we use this library?
