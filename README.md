@@ -111,8 +111,8 @@ cybex = Cybex(accountName="sample_user", password="sample_password", account="1.
 | --- | --- | --- | --- |
 | assetPair | STRING | YES | E.g. ETH/USDT, EOS/USDT |
 interval | ENUM | YES | 1m, 3m, , 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M
-startTime | LONG | NO | Beginning time of the query in epoch time.
-endTime | LONG | NO | End time of the query in epoch time.
+startTime | LONG | NO | Beginning time of the query, the format must be YYYY-MM-DDTHH:mm:ss.ssssssZ. E.g. 2018-01-07T01:20:48.647910Z
+endTime | LONG | NO | End time of the query, the format must be YYYY-MM-DDTHH:mm:ss.ssssssZ. E.g. 2019-01-07T01:20:48.647910Z
 limit | INT | NO | Level to be shown
 useTradePrice | BOOL | NO | By default, it is false and the api returns market prices. If it is specified as “true”, this api returns our exchange’s prices.
 
