@@ -539,9 +539,9 @@ class Cybex:
         payload = {'assetPair': assetPair, "limit": limit, "reverse": int(reverse)}
         return self._handle_response(requests.get(url, params=payload))
 
-    def fetch_ohlcv(self, assetPair, timeframe='1m', params={}):
+    def fetch_ohlcv(self, assetPair, interval='1m', params={}):
         url = "%s/klines" % self.api_root
-        payload = {'assetPair': assetPair, 'interval': timeframe}
+        payload = {'assetPair': assetPair, 'interval': interval}
         payload.update(params)
         return self._handle_response(requests.get(url, params=payload))
 

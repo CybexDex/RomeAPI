@@ -103,7 +103,7 @@ cybex = Cybex(accountName="sample_user", password="sample_password", account="1.
 ### fetch_best_price([asset_pair[, params]])
  Fetch current best bid and ask prices for a given asset pair
  
-### fetch_ohlcv(self, asset_pair, timeframe='1m', params={})
+### fetch_ohlcv(self, asset_pair, interval='1m', params={})
  Fetch kline data for a given asset pair
  
  
