@@ -114,7 +114,7 @@ interval | ENUM | YES | 1m, 3m, , 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d,
 startTime | LONG | NO | Beginning time of the query, the format must be YYYY-MM-DDTHH:mm:ss.ssssssZ. E.g. 2018-01-07T01:20:48.647910Z
 endTime | LONG | NO | End time of the query, the format must be YYYY-MM-DDTHH:mm:ss.ssssssZ. E.g. 2019-01-07T01:20:48.647910Z
 limit | INT | NO | Level to be shown
-useTradePrice | BOOL | NO | By default, it is false and the api returns market prices. If it is specified as “true”, this api returns our exchange’s prices.
+useTradePrice | BOOL | NO | Default is "true", and this api returns our exchange's prices. If it is specified as "false" then this api returns market prices.  
 
  ## FAQ
  
