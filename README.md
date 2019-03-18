@@ -103,10 +103,15 @@ cybex = Cybex(accountName="sample_user", password="sample_password", account="1.
 ### fetch_best_price([asset_pair[, params]])
  Fetch current best bid and ask prices for a given asset pair
  
-### fetch_ohlcv(self, asset_pair, interval='1m', params={})
- Fetch kline data for a given asset pair. Possible intervals are 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M, default 1m.
+### fetch_ohlcv(self, asset_pair, interval='1m', limit=5, useTradePrice='true')
+ Fetch kline data for a given asset pair. 
+
+Parameter | Description |
+---|---|
+*interval* | The possible values are *1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M.* The default value is 1m. 
+*useTradePrice* | The default value is *true*, and this api returns our exchange's prices. If it is specified as *false* then this api returns market prices.
  
-### fetch_klines(self, asset_pair, interval='1m', params={})
+### fetch_klines(self, asset_pair, interval='1m', limit=5, useTradePrice='true')
  Alias to *fetch_ohlcv*
  
  

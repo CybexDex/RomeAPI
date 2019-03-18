@@ -543,14 +543,14 @@ class Cybex:
     def get_interval(self):
         return self.INTERVALS
 
-    def fetch_ohlcv(self, assetPair, interval='1m', limit=5):
+    def fetch_ohlcv(self, assetPair, interval='1m', limit=5, useTradePrice='true'):
         url = "%s/klines" % self.api_root
 
         if interval in self.INTERVALS:
             _interval = interval
         else:
             _interval = self.INTERVALS[0]
-        payload = {'assetPair': assetPair, 'interval': _interval}
+        payload = {'assetPair': assetPair, 'interval': _interval, 'useTradePrice': useTradePrice}
 
         if limit and limit>2:
             payload.update({"limit": limit})
