@@ -351,6 +351,7 @@ class Cybex:
     prod_api_endpoint_root = "https://api.cybex.io/v1"
     uat_api_endpoint_root = "https://apitest.cybex.io/v1"
     prod_chain_endpoint = "https://hongkong.cybex.io/"
+    INTERVALS = ['1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M']
 
     def __init__(self, accountName, password=None, key=None, account=None, env='prod', timeout=None):
 
@@ -539,9 +540,19 @@ class Cybex:
         payload = {'assetPair': assetPair, "limit": limit, "reverse": int(reverse)}
         return self._handle_response(requests.get(url, params=payload))
 
-    def fetch_ohlcv(self, assetPair, interval='1m', params={}):
+    def get_interval(self):
+        return self.INTERVALS
+
+    def fetch_ohlcv(self, assetPair, interval='1m', *args, **kwargs):
         url = "%s/klines" % self.api_root
-        payload = {'assetPair': assetPair, 'interval': interval, 'useTradePrice': 'true'}
-        payload.update(params)
+
+        if interval in self.INTERVALS:
+            _interval = interval
+        else:
+            _interval = self.INTERVALS[0]
+        payload = {'assetPair': assetPair, 'interval': _interval}
+        # payload.update(params)
         return self._handle_response(requests.get(url, params=payload))
 
+# set an alias
+Cybex.fetch_klines = Cybex.fetch_ohlcv

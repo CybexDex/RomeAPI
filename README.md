@@ -40,7 +40,7 @@ NOTE that the private key is not your logon password on the CYBEX exchange.
 To find your private key, refer to [demo application](https://github.com/CybexDex/cybex-python-demo). 
  
 ```Python
-cybex = Cybex(accountName="sample)user", key="private_key")
+cybex = Cybex(accountName="sample_user", key="private_key")
 ```
 
 If you know your account id, you can optionally provide it to speed up the initialization, e.g.
@@ -104,18 +104,12 @@ cybex = Cybex(accountName="sample_user", password="sample_password", account="1.
  Fetch current best bid and ask prices for a given asset pair
  
 ### fetch_ohlcv(self, asset_pair, interval='1m', params={})
- Fetch kline data for a given asset pair
+ Fetch kline data for a given asset pair. Possible intervals are 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M, default 1m.
+ 
+### fetch_klines(self, asset_pair, interval='1m', params={})
+ Alias to *fetch_ohlcv*
  
  
-|Parameter|Type|Mandatory|Example value|
-| --- | --- | --- | --- |
-| assetPair | STRING | YES | E.g. ETH/USDT, EOS/USDT |
-interval | ENUM | YES | 1m, 3m, , 5m, 15m, 30m, 1h, 2h, 4h, 6h, 8h, 12h, 1d, 3d, 1w, 1M
-startTime | LONG | NO | Beginning time of the query, the format must be YYYY-MM-DDTHH:mm:ss.ssssssZ. E.g. 2018-01-07T01:20:48.647910Z
-endTime | LONG | NO | End time of the query, the format must be YYYY-MM-DDTHH:mm:ss.ssssssZ. E.g. 2019-01-07T01:20:48.647910Z
-limit | INT | NO | Level to be shown
-useTradePrice | BOOL | NO | Default is "true", and this api returns our exchange's prices. If it is specified as "false" then this api returns market prices.  
-
  ## FAQ
  
  ### Why should we use this library?
@@ -123,10 +117,10 @@ useTradePrice | BOOL | NO | Default is "true", and this api returns our exchange
  This API library utilizes *coincurve* to improve performance, so that it is efficient, cross platform, responsive, and easy to use.
  
  ### Are the API endpoints connected to the CYBEX witness nodes/full nodes?
- No, the API server is connected to the ROME (**R**ealtime **O**rder **M**atching **E**ngine).
+ No, the API server is connected to the ROME (**R**ealtime **O**rder **M**atching **E**ngine). Our previous library PyCybex is connected to full nodes.
  
  ### What is the difference of this library from PyCybex?
- PyCybex is forked from the bitshares python library, so that requests are executed mainly on full nodes. 
+ PyCybex is forked from the bitshares python library, so that requests are executed mainly on full nodes. It takes at least one block time to confirm order. 
  
  Visit [PyCybex's site](#https://github.com/CybexDex/cybex-node-doc/tree/master/transaction/python) to find more details. 
  
