@@ -32,7 +32,7 @@ setup(
     #
     # And where it will live on PyPI: https://pypi.org/project/sampleproject/
     name='romeapi',  # Required
-    version='1.0.0',  # Required
+    version='1.0.2',  # Required
     description='API connector to CYBEX exchange, the first realtime order matching decentralized exchange',  # Optional
     long_description=long_description,  # Optional
     long_description_content_type='text/markdown',  # Optional (see note above)
