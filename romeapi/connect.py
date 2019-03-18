@@ -543,7 +543,7 @@ class Cybex:
     def get_interval(self):
         return self.INTERVALS
 
-    def fetch_ohlcv(self, assetPair, interval='1m', *args, **kwargs):
+    def fetch_ohlcv(self, assetPair, interval='1m', limit=5):
         url = "%s/klines" % self.api_root
 
         if interval in self.INTERVALS:
@@ -551,8 +551,12 @@ class Cybex:
         else:
             _interval = self.INTERVALS[0]
         payload = {'assetPair': assetPair, 'interval': _interval}
+
+        if limit and limit>2:
+            payload.update({"limit": limit})
         # payload.update(params)
         return self._handle_response(requests.get(url, params=payload))
+
 
 # set an alias
 Cybex.fetch_klines = Cybex.fetch_ohlcv
