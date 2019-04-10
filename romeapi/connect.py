@@ -514,14 +514,14 @@ class Cybex:
 
     def fetch_open_orders(self, since=None, reverse=True):
         url = "%s/order" % self.api_root
-        payload = {'accountName': self.accountName, 'orderStatus': 'OPEN', "reverse": int(reverse)}
+        payload = {'accountName': self.accountName, 'orderStatus': 'OPEN, PENDING_NEW, PENDING_CXL', "reverse": int(reverse)}
         if since:
             payload['startTime'] = time_string(since)
         return self._handle_response(requests.get(url, params=payload))
 
     def fetch_closed_orders(self, since=None, reverse=True):
         url = "%s/order" % self.api_root
-        payload = {'accountName': self.accountName, 'orderStatus': 'CANCELED, REJECTED', "reverse": int(reverse)}
+        payload = {'accountName': self.accountName, 'orderStatus': 'FILLED, CANCELED, REJECTED', "reverse": int(reverse)}
         if since:
             payload['startTime'] = time_string(since)
         return self._handle_response(requests.get(url, params=payload))
