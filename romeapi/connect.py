@@ -194,7 +194,8 @@ class Signer:
     def prepare_order_message(self, asset_pair, side, quantity, price):
 
         if side != 'buy' and side != 'sell':
-            print("Unsupported side", side)
+            if Cybex.verbose:
+                print("Unsupported side", side)
             return None
 
         is_buy = side == 'buy'
@@ -287,7 +288,8 @@ class Signer:
             'signature': signed_tx_json['signatures'][0]
         }
 
-        print(cancel_msg)
+        if Cybex.verbose:
+            print(cancel_msg)
 
         return cancel_msg
 
@@ -323,7 +325,8 @@ class Signer:
             'signature': signed_tx_json['signatures'][0]
         }
 
-        print(cancel_all_msg)
+        if Cybex.verbose:
+            print(cancel_all_msg)
 
         return cancel_all_msg
 
@@ -348,6 +351,7 @@ class Cybex:
     """Cybex Restful API implementation
     """
 
+    verbose = True
     prod_api_endpoint_root = "https://api.cybex.io/v1"
     uat_api_endpoint_root = "https://apitest.cybex.io/v1"
     prod_chain_endpoint = "https://hongkong.cybex.io/"
@@ -464,7 +468,8 @@ class Cybex:
 
     def create_order(self, assetPair, side, quantity, price):
         order_msg = self.signer.prepare_order_message(assetPair, side, quantity, price)
-        print('order_msg', order_msg)
+        if Cybex.verbose:
+            print('order_msg', order_msg)
         trx_id = order_msg['transactionId']
 
         result = self._send_transaction(order_msg)
