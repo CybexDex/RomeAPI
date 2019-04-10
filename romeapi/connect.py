@@ -460,7 +460,7 @@ class Cybex:
                 if 'rejectReason' in data:
                     msg = data['rejectReason']
                 raise CybexRequestException(msg)
-            if 'josnrpc' in data and 'result' in data:
+            if 'jsonrpc' in data and 'result' in data:
                 return data['result']
             return data
         except ValueError:
