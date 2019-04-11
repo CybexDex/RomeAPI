@@ -191,7 +191,7 @@ class Signer:
 
         return tx
 
-    def prepare_order_message(self, asset_pair, side, quantity, price):
+    def prepare_order_message(self, asset_pair, side, quantity, price, fillkill=False):
 
         if side != 'buy' and side != 'sell':
             if Cybex.verbose:
@@ -216,7 +216,7 @@ class Signer:
             "amount_to_sell": buy_sell['amount_to_sell'],
             "min_to_receive": buy_sell['min_to_receive'],
             "expiration": exp_utc.strftime(TS_FORMAT),
-            "fill_or_kill": False,
+            "fill_or_kill": fillkill,
         }
 
         op = operations.Limit_order_create(**op_data)
@@ -251,7 +251,8 @@ class Signer:
             'amountToSell': amountToSell,
             'minToReceive': minToReceive,
             'expiration': int(exp.timestamp()),
-            'fill_or_kill': int(signed_tx_json['operations'][0][1]['fill_or_kill']),
+            #'fill_or_kill': int(signed_tx_json['operations'][0][1]['fill_or_kill']),
+            'fill_or_kill': int(fillkill),
             'signature': signed_tx_json['signatures'][0],
             'is_buy': int(is_buy)
         }
@@ -360,15 +361,7 @@ class Cybex:
     def __init__(self, accountName, password=None, key=None, account=None, env='prod', timeout=None):
 
         self.accountName = accountName
-
-        if key is not None:
-            user_key = key
-
-        elif password is not None:
-            user_key = str(PasswordKey(accountName, password).get_private())
-
-        else:
-            raise CybexSignerException('Cannot initialize signer, no valid password or key')
+        self.signer = None
 
         if account:
             self.account = account
@@ -387,11 +380,24 @@ class Cybex:
         self.session.headers.update({'content-type': 'application/json', 'accept': 'application/json'})
         self._load()
 
+        # user key
+        # TODO: verify the password
+        user_key = None
+        if key is not None:
+            user_key = key
+
+        elif password is not None:
+            user_key = str(PasswordKey(accountName, password).get_private())
+
+        # else:
+        #     raise CybexSignerException('Cannot initialize signer, no valid password or key')
+
         # check if we find the account at last
-        if self.account:
+        if self.account and user_key:
             self.signer = Signer(self.account, user_key, self.refData)
-        else:
-            raise CybexSignerException('Cannot initialize signer, no valid account')
+        # else:
+        #     raise CybexSignerException('Cannot initialize signer, no valid account')
+
 
     def _load(self):
         url = "%s/refData" % self.api_root
@@ -466,31 +472,34 @@ class Cybex:
         except ValueError:
             raise CybexRequestException('Invalid Response: %s' % response.text)
 
-    def create_order(self, assetPair, side, quantity, price):
-        order_msg = self.signer.prepare_order_message(assetPair, side, quantity, price)
-        if Cybex.verbose:
-            print('order_msg', order_msg)
-        trx_id = order_msg['transactionId']
+    def create_order(self, assetPair, side, quantity, price, fillkill):
+        if self.signer:
+            order_msg = self.signer.prepare_order_message(assetPair, side, quantity, price, fillkill=fillkill)
+            if Cybex.verbose:
+                print('order_msg', order_msg)
+            trx_id = order_msg['transactionId']
 
-        result = self._send_transaction(order_msg)
+            result = self._send_transaction(order_msg)
 
-        return trx_id, result
+            return trx_id, result
 
-    def create_limit_buy_order(self, assetPair, quantity, price):
-        return self.create_order(assetPair, 'buy', quantity, price)
+        return None
 
-    def create_limit_sell_order(self, assetPair, quantity, price):
-        return self.create_order(assetPair, 'sell', quantity, price)
+    def create_limit_buy_order(self, assetPair, quantity, price, fillkill=False):
+        return self.create_order(assetPair, 'buy', quantity, price, fillkill)
 
-    def create_market_buy_order(self, assetPair, quantity):
+    def create_limit_sell_order(self, assetPair, quantity, price, fillkill=False):
+        return self.create_order(assetPair, 'sell', quantity, price, fillkill)
+
+    def create_market_buy_order(self, assetPair, quantity, fillkill=False):
         bid, ask = self.fetch_best_price(assetPair)
         # put some buffer in price
-        return self.create_order(assetPair, 'buy', quantity, ask * 1.01)
+        return self.create_order(assetPair, 'buy', quantity, ask * 1.01, fillkill)
 
-    def create_market_sell_order(self, assetPair, quantity):
+    def create_market_sell_order(self, assetPair, quantity, fillkill=False):
         bid, ask = self.fetch_best_price(assetPair)
         # put some buffer in price
-        return self.create_order(assetPair, 'sell', quantity, bid * 0.99)
+        return self.create_order(assetPair, 'sell', quantity, bid * 0.99, fillkill)
 
     def fetch_balance(self):
         url = "%s/position" % self.api_root
@@ -498,23 +507,29 @@ class Cybex:
         return self._handle_response(requests.get(url, params=payload))
 
     def cancel_order(self, id):
-        cancel_msg = self.signer.prepare_cancel_message(id)
-        cancel_result = self._send_transaction(cancel_msg)
-        return cancel_result
+        if self.signer:
+            cancel_msg = self.signer.prepare_cancel_message(id)
+            cancel_result = self._send_transaction(cancel_msg)
+            return cancel_result
+        return None
 
     def cancel_all(self, assetPair):
-        cancel_all_msg = self.signer.prepare_cancel_all_message(assetPair)
-        cancel_all_result = self._send_transaction(cancel_all_msg)
-        return cancel_all_result
+        if self.signer:
+            cancel_all_msg = self.signer.prepare_cancel_all_message(assetPair)
+            cancel_all_result = self._send_transaction(cancel_all_msg)
+            return cancel_all_result
+        return None
 
     def fetch_order(self, id):
         url = "%s/order" % self.api_root
         payload = {'accountName': self.accountName, 'transactionId': id}
         return self._handle_response(requests.get(url, params=payload))
 
-    def fetch_orders(self, assetPair, reverse=True):
+    def fetch_orders(self, assetPair=None, reverse=True):
         url = "%s/order" % self.api_root
-        payload = {'accountName': self.accountName, 'assetPair': assetPair, "reverse": int(reverse)}
+        payload = {'accountName': self.accountName, "reverse": int(reverse)}
+        if assetPair:
+            payload["assetPair"] = assetPair
         return self._handle_response(requests.get(url, params=payload))
 
     def fetch_open_orders(self, since=None, reverse=True):
