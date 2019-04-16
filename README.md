@@ -20,15 +20,15 @@ A [demo application](https://github.com/CybexDex/cybex-python-demo) is available
 
 ## API Methods
 
- Please note the order type notation of Cybex ROME.
+Please note the order type notation of Cybex ROME.
  
- ID |Status | Type* | Details 
+ID |Status | Type* | Details 
 ----|---------|---- | ------- 
-1|PENDING_NEW| open |New valid order, confirmed by ROME but not yet confirmed on chain  
-2|OPEN| open | Open order, confirmed on chain 
-3|PENDING_CXL| open |Cancel order confirmed by ROME, not yet confirmed on chain
-4|CANCELED| closed |Order cancelled by user or expired, confirmed on chain 
-5|FILLED | closed |Order fully or partially filled
+1|PENDING_NEW| open |New valid order, confirmed by ROME but not yet confirmed on chain.  
+2|OPEN| open | Open order, confirmed on chain. Status may change to either CANCELED or FILLED.   
+3|PENDING_CXL| open |Cancel order confirmed by ROME, not yet confirmed on chain.
+4|CANCELED| closed |Order cancelled by user or expired, confirmed on chain.
+5|FILLED | closed |Order fully filled. Filled order cannot be canceled.
 6|REJECTED| closed |Order rejected by ROME if not valid. Order rejected by ROME will not go to chain.
 
 Order type is the category for function call get_open_orders and get_closed_orders. 
@@ -45,8 +45,14 @@ Construct a *Cybex* object with your account name and password.
  cybex.load_markets()
  # ticker
  cybex.fetch_ticker("ETH/USDT")
- # private methods
+ # check account balance
  cybex.fetch_balance()
+ # query with transcation id
+  # create a market buy order
+ order_transaction_id, result = cybex.create_market_buy_order("ETH/USDT", 0.1)
+ orders = cybex.fetch_order(order_transaction_id)
+ # cancel order
+ cancel_order = cybex.cancel_order(order_transaction_id)
 ```
 
 ### Construct Cybex(account, private_key) (Optional)
@@ -133,7 +139,7 @@ Parameter | Description |
  ## FAQ
  
  ### Why should we use this library?
- The CYBEX API library provides convenient access to the CYBEX ROME (**R**ealtime **O**rder **M**atching **E**ngine) directly through the API server. High frequency trading or market making is thus made possible on our decentralized exchange. 
+ The CYBEX ROME API library provides convenient access to the CYBEX ROME (**R**ealtime **O**rder **M**atching **E**ngine) directly through the API server. High frequency trading or market making is thus made possible on our decentralized exchange. 
  This API library utilizes *coincurve* to improve performance, so that it is efficient, cross platform, responsive, and easy to use.
  
  ### Are the API endpoints connected to the CYBEX witness nodes/full nodes?
