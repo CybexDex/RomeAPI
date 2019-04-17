@@ -198,7 +198,9 @@ class Signer:
                 print("Unsupported side", side)
             return None
 
-        is_buy = side == 'buy'
+        # Temporarily disable is_buy flag so that romeapi works with upgraded cybex uat and production systems
+        # is_buy = side == 'buy'
+        is_buy = 0
 
         # time calculation
         utcnow = datetime.utcnow()
