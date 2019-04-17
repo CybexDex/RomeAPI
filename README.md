@@ -1,8 +1,10 @@
 # CYBEX ROME API Library
 
- The CYBEX ROME API library is used to connect and trade with the decentralized realtime cryptocurrency exchange - CYBEX. The trading process on a decentralized exchange is different from others by nature, instead of logging in a session with passwords, all the API endpoints are publicly open, but one would need his/her very own private key to sign a request for authentication.
+ The CYBEX ROME(Realtime Order Matching Engine) API library is designed to connect and trade on the exchange efficiently. Since Cybex is based on a decentralized blocchain, instead of logging in a session with passwords, all the API endpoints are public, but one would need his/her very own private key to sign a request for authentication.
 
- This API library is inspired by CCXT, an extendable, easy to use, exchange connection library. Structures and function calls are roughly the same. We also utilized a library *coincurve* with high performance C extension *secp256k1* to accelerate the signing process, approximately 5ms for one signature. We will try to get listed in *CCXT* soon.
+ Here we utilized a library *coincurve* with high performance C extension *secp256k1* to accelerate the signing process, approximately 5ms for one signature. This API library is inspired by CCXT, an extendable, easy to use, exchange connection library. 
+ 
+ We will try to get listed in *CCXT* in the coming future.
 
 ## Installation
 
@@ -16,7 +18,20 @@
 
 A [demo application](https://github.com/CybexDex/cybex-python-demo) is available for quick start on how to use the CYBEX ROME API library.
 
-## Supported function calls
+## API Methods
+
+Please note the order type notation of Cybex ROME.
+ 
+ID |Status | Type* | Details 
+----|---------|---- | ------- 
+1|PENDING_NEW| open |New valid order, confirmed by ROME but not yet confirmed on chain.  
+2|OPEN| open | Open order, confirmed on chain. Status may change to either CANCELED or FILLED.   
+3|PENDING_CXL| open |Cancel order confirmed by ROME, not yet confirmed on chain.
+4|CANCELED| closed |Order cancelled by user or expired, confirmed on chain.
+5|FILLED | closed |Order fully filled. Filled order cannot be canceled.
+6|REJECTED| closed |Order rejected by ROME if not valid. Order rejected by ROME will not go to chain.
+
+Order type is the category for function call get_open_orders and get_closed_orders. 
 
 ### Construct Cybex(account, password)  (Recommended)
 Construct a *Cybex* object with your account name and password.
@@ -30,8 +45,14 @@ Construct a *Cybex* object with your account name and password.
  cybex.load_markets()
  # ticker
  cybex.fetch_ticker("ETH/USDT")
- # private methods
+ # check account balance
  cybex.fetch_balance()
+ # query with transcation id
+  # create a market buy order
+ order_transaction_id, result = cybex.create_market_buy_order("ETH/USDT", 0.1)
+ orders = cybex.fetch_order(order_transaction_id)
+ # cancel order
+ cancel_order = cybex.cancel_order(order_transaction_id)
 ```
 
 ### Construct Cybex(account, private_key) (Optional)
@@ -118,7 +139,7 @@ Parameter | Description |
  ## FAQ
  
  ### Why should we use this library?
- The CYBEX API library provides convenient access to the CYBEX ROME (**R**ealtime **O**rder **M**atching **E**ngine) directly through the API server. High frequency trading or market making is thus made possible on our decentralized exchange. 
+ The CYBEX ROME API library provides convenient access to the CYBEX ROME (**R**ealtime **O**rder **M**atching **E**ngine) directly through the API server. High frequency trading or market making is thus made possible on our decentralized exchange. 
  This API library utilizes *coincurve* to improve performance, so that it is efficient, cross platform, responsive, and easy to use.
  
  ### Are the API endpoints connected to the CYBEX witness nodes/full nodes?
