@@ -256,7 +256,7 @@ class Signer:
             #'fill_or_kill': int(signed_tx_json['operations'][0][1]['fill_or_kill']),
             'fill_or_kill': int(fillkill),
             'signature': signed_tx_json['signatures'][0],
-            'is_buy': int(is_buy)
+            'isBuy': int(is_buy)
         }
 
         return order_msg
