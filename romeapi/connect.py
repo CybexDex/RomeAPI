@@ -107,52 +107,15 @@ class Pair:
                     })
 
     def get_dict(self, side, quantity, price):
+        base = {"amount": int(round(float(quantity) * 10 ** self.base["precision"])),"asset_id": self.base["id"]}
+        quote = {"amount": int(round(float(quantity) * float(price) * 10 ** self.quote["precision"])), "asset_id": self.quote["id"]}
+
         if side == 'buy':
-            return self.buy(quantity, price)
+            return {"amount_to_sell": quote, "min_to_receive": base}
         if side == 'sell':
-            return self.sell(quantity, price)
+            return {"amount_to_sell": base, "min_to_receive": quote}
 
         return None
-
-    def sell(self, amount, price):
-
-        return {
-            "amount_to_sell": {
-                "amount": int(
-                    round(float(amount) * 10 ** self.base["precision"])
-                ),
-                "asset_id": self.base["id"]
-            },
-            "min_to_receive": {
-                "amount": int(
-                    round(
-                        float(amount)
-                        * float(price)
-                        * 10 ** self.quote["precision"]
-                    )
-                ),
-                "asset_id": self.quote["id"]
-            }
-        }
-
-    def buy(self, amount, price):
-
-        return {
-            "amount_to_sell": {
-                "amount": int(
-                    round(float(amount) * float(price) * 10 ** self.quote["precision"])
-                ),
-                "asset_id": self.quote["id"]
-            },
-            "min_to_receive": {
-                "amount": int(
-                    round(
-                        float(amount) * 10 ** self.base["precision"]
-                    )
-                ),
-                "asset_id": self.base["id"]
-            }
-        }
 
 
 def get_block_params(ref_block_id):
@@ -175,8 +138,17 @@ class Signer:
 
         self.chain = {'chain_id': refData['chainId'], 'core_symbol': 'CYB', 'prefix': 'CYB'}
         self.fees = refData['fees']
-        self.pairs = refData['availableAssets']
+        self.pairs = refData['availableAssetPairs']
+        self.assets = refData['availableAssets']
+        
         self.ref_block_num, self.ref_block_prefix = get_block_params(refData['refBlockId'])
+        
+    def get_pair(self, assetPair):
+        result = [pair for pair in self.pairs if pair.name == assetPair]  # list of all elements with .n==30
+        if len(result) == 1:
+            return result
+
+        return None
 
     def signed(self, op, tx_expiration):
 
@@ -209,7 +181,7 @@ class Signer:
         # this is the local time, use to timestamp to calculate utc timestamp
         exp = datetime.now() + (exp_utc - utcnow)
 
-        pair = Pair(asset_pair, self.pairs)
+        pair = Pair(asset_pair, self.assets)
         buy_sell = pair.get_dict(side, quantity, price)
 
         op_data = {
@@ -297,7 +269,7 @@ class Signer:
         return cancel_msg
 
     def prepare_cancel_all_message(self, asset_pair):
-        pair = Pair(asset_pair, self.pairs)
+        pair = Pair(asset_pair, self.assets)
         op = operations.Cancel_all(**{
             "fee": {'amount': self.fees['cancelAllFee'], 'asset_id': self.fees['feeAssetId']},
             "seller": self.account,
@@ -476,6 +448,13 @@ class Cybex:
 
     def create_order(self, assetPair, side, quantity, price, fillkill):
         if self.signer:
+            _pair = self.signer.get_pair(assetPair)
+            if not _pair:
+                raise CybexRequestException('Asset pair %s is not supported!' % assetPair)
+            if "minTickSize" in _pair and (price*quantity < _pair["minTickSize"]):
+                raise CybexRequestException('Min tick size violation, the minimum tick size is %s' % _pair["minTickSize"])
+            if "minQuantity" in _pair and (quantity < _pair["minQuantity"]):
+                raise CybexRequestException('Min quantity violation, the minimum quantity is %s' % _pair["minQuantity"])
             order_msg = self.signer.prepare_order_message(assetPair, side, quantity, price, fillkill=fillkill)
             if Cybex.verbose:
                 print('order_msg', order_msg)

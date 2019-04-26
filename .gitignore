@@ -12,4 +12,4 @@ coretypes/
 # due to using tox and pytest
 .tox
 .cache
-test-api.py
+test*.py
