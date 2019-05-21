@@ -1,13 +1,8 @@
-#romejs
-
-Romejs is a javascript binding for the Cybex ROME API. Romejs is released with built-in signer, so that there is no 
-need to run separate signing program. 
-
 Here is the basic usage example.
 
 ````javascript
 
-const Cybex = require('romejs');
+const Cybex = require('romeapi');
 
 (async () => {
     const cybex = new Cybex();
@@ -35,7 +30,6 @@ const Cybex = require('romejs');
 })();
 
 ````
-
 
 ## supported methods
 
