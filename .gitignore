@@ -13,3 +13,8 @@ coretypes/
 .tox
 .cache
 test*.py
+js/node_modules/
+js/package-lock.json
+js/test.js
+js/signer.js
+*test.py

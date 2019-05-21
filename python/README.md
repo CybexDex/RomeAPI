@@ -1,10 +1,10 @@
 # CYBEX ROME API Library
 
- The CYBEX ROME(Realtime Order Matching Engine) API library is designed to connect and trade on the exchange efficiently. 
-Since Cybex is based on a decentralized blocchain, instead of logging in a session with passwords, all the API endpoints are public, but one would need his/her very own private key to sign a request for authentication.
+ The CYBEX ROME(Realtime Order Matching Engine) API library is designed to connect and trade on the exchange efficiently. Since Cybex is based on a decentralized blocchain, instead of logging in a session with passwords, all the API endpoints are public, but one would need his/her very own private key to sign a request for authentication.
 
- This API library is inspired by CCXT, an extendable, easy to use, exchange connection library. It supports python and JavaScript.
+ Here we utilized a library *coincurve* with high performance C extension *secp256k1* to accelerate the signing process, approximately 5ms for one signature. This API library is inspired by CCXT, an extendable, easy to use, exchange connection library. 
  
+ We will try to get listed in *CCXT* in the coming future.
 
 ## Installation
 
@@ -155,7 +155,3 @@ Parameter | Description |
  Yes, you can. But you might find it less efficient. 
  
  Visit [PyCybex's site](#https://github.com/CybexDex/cybex-node-doc/tree/master/transaction/python) to find out more details.
-
- ## Contact
-
-email support@cybex.io
