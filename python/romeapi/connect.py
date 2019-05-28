@@ -537,8 +537,8 @@ class Cybex:
         return self._handle_response(requests.get(url, params=payload))
 
     def fetch_trades(self, assetPair, limit=20, reverse=True):
-        url = "%s/trade" % self.api_root
-        payload = {'assetPair': assetPair, "limit": limit, "reverse": int(reverse)}
+        url = "%s/recentTrade" % self.api_root
+        payload = {'assetPair': assetPair, "limit": limit}
         return self._handle_response(requests.get(url, params=payload))
 
     def get_interval(self):
