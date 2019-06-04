@@ -4,7 +4,7 @@ from graphenebase.objects import GrapheneObject, isArgsThisClass#, Asset
 from graphenebase.objects import ObjectId as GPHObjectId
 
 from .objecttypes import object_type
-from .objects import LimitOrderCancelExtensions
+from .objects import LimitOrderCancelExtensions, LimitOrderCreateExtensions
 
 # class ObjectId(GPHObjectId):
 #     """ Need to overwrite a few attributes to load proper object_types from
@@ -78,6 +78,13 @@ class Limit_order_create(GrapheneObject):
         else:
             if len(args) == 1 and len(kwargs) == 0:
                 kwargs = args[0]
+
+            if 'extensions' not in kwargs or not kwargs['extensions']:
+                kwargs['extensions'] = []
+            elif not isinstance(kwargs['extensions'], list):
+                raise TypeError(
+                    'You need to provide a list as extension param')
+
             super().__init__(
                 OrderedDict(
                     [
@@ -87,7 +94,8 @@ class Limit_order_create(GrapheneObject):
                             ("min_to_receive", Asset(kwargs["min_to_receive"])),
                             ("expiration", PointInTime(kwargs["expiration"])),
                             ("fill_or_kill", Bool(kwargs["fill_or_kill"])),
-                            ("extensions", Set([])),
+                            #("extensions", Set([])),
+                            ('extensions', LimitOrderCreateExtensions(kwargs['extensions']))
                     ]
                 )
             )

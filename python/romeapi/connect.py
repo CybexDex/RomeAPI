@@ -144,7 +144,7 @@ class Signer:
         self.ref_block_num, self.ref_block_prefix = get_block_params(refData['refBlockId'])
         
     def get_pair(self, assetPair):
-        result = [pair for pair in self.pairs if pair.name == assetPair]  # list of all elements with .n==30
+        result = [pair for pair in self.pairs if pair["name"] == assetPair]  # list of all elements with .n==30
         if len(result) == 1:
             return result
 
@@ -171,8 +171,11 @@ class Signer:
             return None
 
         # Temporarily disable is_buy flag so that romeapi works with upgraded cybex uat and production systems
-        # is_buy = side == 'buy'
-        is_buy = 0
+        extensions = []
+        is_buy = side == 'buy'
+        if is_buy:
+            extensions = [[7, {'is_buy': True}]]
+        # is_buy = 0
 
         # time calculation
         utcnow = datetime.utcnow()
@@ -191,6 +194,7 @@ class Signer:
             "min_to_receive": buy_sell['min_to_receive'],
             "expiration": exp_utc.strftime(TS_FORMAT),
             "fill_or_kill": fillkill,
+            "extensions": extensions
         }
 
         op = operations.Limit_order_create(**op_data)
@@ -330,23 +334,22 @@ class Cybex:
     prod_api_endpoint_root = "https://api.cybex.io/v1"
     uat_api_endpoint_root = "https://apitest.cybex.io/v1"
     prod_chain_endpoint = "https://hongkong.cybex.io/"
+    uat_chain_endpoint = "http://18.136.140.223:38090"
     INTERVALS = ['1m', '3m', '5m', '15m', '30m', '1h', '2h', '4h', '6h', '8h', '12h', '1d', '3d', '1w', '1M']
 
-    def __init__(self, accountName, password=None, key=None, account=None, env='prod', timeout=None):
+    def __init__(self, accountName=None, password=None, key=None, account=None, env='prod', timeout=None):
 
         self.accountName = accountName
         self.signer = None
-
-        if account:
-            self.account = account
-        else:
-            self.account = self._find_account(accountName)
-        if env == 'prod':
-            self.api_root = self.prod_api_endpoint_root
-        elif env == 'uat':
-            self.api_root = self.uat_api_endpoint_root
         self.timeout = timeout
         self.markets = []
+        self.api_root = self.prod_api_endpoint_root
+        self.chain_endpoint = self.prod_chain_endpoint
+        user_key = key
+
+        if env == 'uat':
+            self.api_root = self.uat_api_endpoint_root
+            self.chain_endpoint = self.uat_chain_endpoint
 
         # Prepare HTTPS session
         self.session = requests.Session()
@@ -354,23 +357,27 @@ class Cybex:
         self.session.headers.update({'content-type': 'application/json', 'accept': 'application/json'})
         self._load()
 
-        # user key
-        # TODO: verify the password
-        user_key = None
-        if key is not None:
-            user_key = key
+        if not account and accountName:
+            self.account = self._find_account(accountName)
+        else:
+            self.account = account
 
-        elif password is not None:
-            user_key = str(PasswordKey(accountName, password).get_private())
+        if self.account:
+            data = {"method": "call", "params": [0, "get_objects", [[self.account]]], "id": 2}
+            res = self._handle_response(requests.post(self.chain_endpoint, json=data))
+            # res = await this.executeRestRequest(this.chainEndPoint, "POST", data);
+            if len(res):
+                if not self.accountName:
+                    print(res[0])
+                    self.accountName = res[0]["name"]
+            if not user_key and password is not None:
+                user_key = str(PasswordKey(accountName, password).get_private())
 
-        # else:
-        #     raise CybexSignerException('Cannot initialize signer, no valid password or key')
+            if user_key:
+                self.signer = Signer(self.account, user_key, self.refData)
 
-        # check if we find the account at last
-        if self.account and user_key:
-            self.signer = Signer(self.account, user_key, self.refData)
-        # else:
-        #     raise CybexSignerException('Cannot initialize signer, no valid account')
+        if not (self.account and user_key):
+            raise CybexSignerException('Cannot initialize signer, no valid account')
 
 
     def _load(self):
@@ -475,12 +482,12 @@ class Cybex:
     def create_market_buy_order(self, assetPair, quantity, fillkill=False):
         bid, ask = self.fetch_best_price(assetPair)
         # put some buffer in price
-        return self.create_order(assetPair, 'buy', quantity, ask * 1.01, fillkill)
+        return self.create_order(assetPair, 'buy', quantity, ask * 1.001, fillkill)
 
     def create_market_sell_order(self, assetPair, quantity, fillkill=False):
         bid, ask = self.fetch_best_price(assetPair)
         # put some buffer in price
-        return self.create_order(assetPair, 'sell', quantity, bid * 0.99, fillkill)
+        return self.create_order(assetPair, 'sell', quantity, bid * 0.999, fillkill)
 
     def fetch_balance(self):
         url = "%s/position" % self.api_root
