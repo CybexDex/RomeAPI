@@ -399,7 +399,7 @@ class Cybex:
         return None
 
     def _find_account(self, accountName):
-        url = self.prod_chain_endpoint+"rpc"
+        url = self.chain_endpoint
         data = {"method": "call", "params": [0, "lookup_accounts",[accountName, 50]], "id": 1}
         res = requests.get(url, json=data)
         result = res.json()
@@ -409,7 +409,7 @@ class Cybex:
                     return acc[1]
 
     def fetch_ticker(self, assetPair):
-        url = self.prod_chain_endpoint
+        url = self.chain_endpoint
         if '/' in assetPair:
             params = assetPair.split('/')
             newparams = []
