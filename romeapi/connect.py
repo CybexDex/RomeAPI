@@ -401,7 +401,7 @@ class Cybex:
     def _find_account(self, accountName):
         url = self.chain_endpoint
         data = {"method": "call", "params": [0, "lookup_accounts",[accountName, 50]], "id": 1}
-        res = requests.get(url, json=data)
+        res = requests.get(url, json=data, verify=False)
         result = res.json()
         if 'result' in result:
             for acc in result['result']:
@@ -418,7 +418,7 @@ class Cybex:
                     asset = 'JADE.' + asset
                 newparams.append(asset)
         data = {"jsonrpc": "2.0", "method": "get_ticker", "params": newparams, "id": 1}
-        return self._handle_response(requests.get(url, json=data))
+        return self._handle_response(requests.get(url, json=data, verify=False))
 
     def fetch_order_book(self, assetPair, limit=3):
         url = '%s/orderBook' % self.api_root
